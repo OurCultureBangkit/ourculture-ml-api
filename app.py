@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request
 from werkzeug.utils import secure_filename
 from keras.models import load_model
 from keras.preprocessing import image
+import tensorflow as tf
+from PIL import Image
 import os
 import numpy as np
 
@@ -12,9 +14,9 @@ def get_labels():
     return labels
 
 
-def preprocessing_image(image_path):
-    img = image.load_img(image_path, target_size=(150, 150))
-    img = image.img_to_array(img) / 255.0
+def preprocessing_image(img):
+    img = tf.image.resize(img,size=(150,150))
+    img = img / 255.0
     img = np.expand_dims(img, axis=0)
 
     return img
@@ -70,13 +72,14 @@ def prediction():
             # Check if the file is an allowed image type
             if img and allowed_file(img.filename):
                 # Save input image
-                filename = secure_filename(img.filename)
-                img.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-                image_path = os.path.join(
-                    app.config["UPLOAD_FOLDER"], filename)
-
+                # filename = secure_filename(img.filename)
+                # img.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+                # image_path = os.path.join(
+                #     app.config["UPLOAD_FOLDER"], filename)
+                #convert the image to matrix
+                pil_image=np.asarray(Image.open(img))
                 # Preprocess the input image
-                preprocessed_img = preprocessing_image(image_path)
+                preprocessed_img = preprocessing_image(pil_image)
 
                 # Predict the class name
                 class_name = predict_image(preprocessed_img)
