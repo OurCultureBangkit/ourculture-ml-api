@@ -33,7 +33,7 @@ def predict_image(image):
 
 app = Flask(__name__)
 app.config["ALLOWED_EXTENSIONS"] = set(['jpg', 'png', 'jpeg'])
-app.config["UPLOAD_FOLDER"] = "uploads"
+# app.config["UPLOAD_FOLDER"] = "uploads"
 
 
 def allowed_file(filename):
