@@ -4,7 +4,6 @@ from keras.models import load_model
 from keras.preprocessing import image
 import tensorflow as tf
 from PIL import Image
-import os
 import numpy as np
 
 
@@ -15,7 +14,7 @@ def get_labels():
 
 
 def preprocessing_image(img):
-    img = tf.image.resize(img,size=(150,150))
+    img = tf.image.resize(img, size=(150, 150))
     img = img / 255.0
     img = np.expand_dims(img, axis=0)
 
@@ -35,7 +34,6 @@ def predict_image(image):
 
 app = Flask(__name__)
 app.config["ALLOWED_EXTENSIONS"] = set(['jpg', 'png', 'jpeg'])
-# app.config["UPLOAD_FOLDER"] = "uploads"
 
 
 def allowed_file(filename):
@@ -71,13 +69,9 @@ def prediction():
 
             # Check if the file is an allowed image type
             if img and allowed_file(img.filename):
-                # Save input image
-                # filename = secure_filename(img.filename)
-                # img.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-                # image_path = os.path.join(
-                #     app.config["UPLOAD_FOLDER"], filename)
-                #convert the image to matrix
-                pil_image=np.asarray(Image.open(img))
+                # convert the image to matrix
+                pil_image = np.asarray(Image.open(img))
+
                 # Preprocess the input image
                 preprocessed_img = preprocessing_image(pil_image)
 

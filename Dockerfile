@@ -3,7 +3,6 @@ FROM python:3.10-slim
 WORKDIR /flask-app
 COPY app.py /flask-app
 COPY requirements.txt /flask-app
-COPY uploads /flask-app/uploads
 COPY labels.txt /flask-app
 COPY model.h5 /flask-app
 
